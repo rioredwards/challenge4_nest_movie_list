@@ -6,51 +6,42 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { CreateMovieDTO } from './dto/createMovie.dto';
 import { UpdateMovieDTO } from './dto/updateMovie.dto';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
+
   // GET /movies
   @Get()
   getMovies() {
-    // TODO
-
-    return 'This will return all movies';
+    return this.moviesService.getAll();
   }
+
   // GET /movies/:id
   @Get('/:id')
   getMovie(@Param('id') movieId: string) {
-    // TODO
-
-    return `This will return a movie with the id of ${movieId}`;
+    return this.moviesService.getOne(movieId);
   }
+
   // POST /movies
   @Post()
   createMovie(@Body() createMovieDto: CreateMovieDTO) {
-    // TODO
-
-    return {
-      name: createMovieDto.name,
-    };
+    return this.moviesService.create(createMovieDto);
   }
+
   // DELETE /movies/:id
   @Delete('/:id')
   removeMovie(@Param('id') movieId: string) {
-    // TODO
-
-    return `This will delete a movie with the id of ${movieId}`;
+    return this.moviesService.deleteOne(movieId);
   }
+
   // PUT /movies/:id
   @Put('/:id')
   patchMovie(@Param('id') movieId: string, UpdateMovieDTO: UpdateMovieDTO) {
-    // TODO
-
-    return {
-      updatedMovie: movieId,
-      ...UpdateMovieDTO,
-    };
+    return this.moviesService.update(movieId, UpdateMovieDTO);
   }
 }
